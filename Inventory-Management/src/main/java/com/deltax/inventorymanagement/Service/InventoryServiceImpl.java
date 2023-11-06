@@ -9,24 +9,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 
 public class InventoryServiceImpl implements InventoryService {
 
     @Autowired
-    private WebClient webClient;
+    private WebClient.Builder webClientBuilder;
     @Autowired
     private InventoryRepository inventoryRepository;
 
     @Override
     public Inventory createInventory(InventoryRequest inventoryRequest) {
-        Product product = webClient.get()
-                .uri("http://PRODUCT-SERVICE/products/6544ff35bd58d90c06e0af43" )
+        Product product = webClientBuilder.build().get()
+                .uri("http://PRODUCT-SERVICE/products/" + inventoryRequest.getProductId())
                 .retrieve()
                 .bodyToMono(Product.class)
                 .block();
+
+        assert product != null;
 
 
         Inventory inventory = new Inventory();
