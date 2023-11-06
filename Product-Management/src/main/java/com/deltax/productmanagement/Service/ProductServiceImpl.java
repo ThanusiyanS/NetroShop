@@ -1,12 +1,12 @@
 package com.deltax.productmanagement.Service;
 
 import com.deltax.productmanagement.Entity.Product;
+import com.deltax.productmanagement.Exception.ProductNotFoundException;
 import com.deltax.productmanagement.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -24,8 +24,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Optional<Product> getAProduct(String id) {
-        return productRepository.findById(id);
+    public Product getAProduct(String id) {
+        return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
     }
 
     @Override
@@ -36,12 +36,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product updateProduct(Product product) {
-        Optional<Product> opt = getAProduct(product.getId());
-        Product old = opt.get();
+        Product old = getAProduct(product.getId());
         old.setProductName(product.getProductName());
         old.setId(product.getId());
         old.setProductType(product.getProductType());
         old.setPrice(product.getPrice());
+        old.setProductDescription(product.getProductDescription());
 
         return productRepository.save(old);
 
