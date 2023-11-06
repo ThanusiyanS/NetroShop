@@ -1,4 +1,4 @@
-package com.deltax.productmanagement.Entity;
+package com.deltax.inventorymanagement.Entity;
 
 import lombok.Data;
 import lombok.Getter;
@@ -6,17 +6,15 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
 @Document
-@Getter
+@Data
 @Setter
-public class Product {
+@Getter
+public class Inventory {
     @Id
-    private String id;
+    private String inventoryId;
+    private String skuCode;
     private String productName;
-    private double price;
-    private String productType;
-    private String productDescription;
-
+    private long quantity;
 
 }
