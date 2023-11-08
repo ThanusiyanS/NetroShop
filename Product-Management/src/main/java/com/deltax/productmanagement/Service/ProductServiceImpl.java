@@ -1,5 +1,7 @@
 package com.deltax.productmanagement.Service;
 
+import com.deltax.productmanagement.DTO.PriceResponse;
+import com.deltax.productmanagement.DTO.ProductRequest;
 import com.deltax.productmanagement.Entity.Product;
 import com.deltax.productmanagement.Exception.ProductNotFoundException;
 import com.deltax.productmanagement.Repository.ProductRepository;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -35,15 +38,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Product old = getAProduct(product.getId());
-        old.setProductName(product.getProductName());
-        old.setId(product.getId());
-        old.setProductType(product.getProductType());
-        old.setPrice(product.getPrice());
-        old.setProductDescription(product.getProductDescription());
+    public Product updateProduct(String id, ProductRequest productRequest) {
+        Product old = getAProduct(id);
+        old.setProductName(productRequest.getProductName());
+        old.setProductType(productRequest.getProductType());
+        old.setPrice(productRequest.getPrice());
+        old.setProductDescription(productRequest.getProductDescription());
 
         return productRepository.save(old);
 
+    }
+
+    @Override
+    public List<PriceResponse> getPriceByIds(List<String> productIds) {
+
+        return productRepository.findPriceByIdInDistinct(productIds);
     }
 }

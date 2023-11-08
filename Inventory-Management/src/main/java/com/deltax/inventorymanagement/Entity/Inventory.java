@@ -12,9 +12,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 public class Inventory {
     @Id
-    private String inventoryId;
     private String skuCode;
     private String productName;
     private long quantity;
 
+
+
+
 }
+
+
