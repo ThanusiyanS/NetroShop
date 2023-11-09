@@ -3,6 +3,7 @@ package com.deltax.inventorymanagement.Service;
 import com.deltax.inventorymanagement.DTO.InventoryRequest;
 import com.deltax.inventorymanagement.DTO.Product;
 import com.deltax.inventorymanagement.Entity.Inventory;
+import com.deltax.inventorymanagement.Exception.InventoryNotFoundException;
 import com.deltax.inventorymanagement.Repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Inventory createInventory(InventoryRequest inventoryRequest) {
         Product product = webClientBuilder.build().get()
-                .uri("http://PRODUCT-SERVICE/products/" + inventoryRequest.getProductId())
+                .uri("http://PRODUCT-SERVICE/products/get/" + inventoryRequest.getProductId())
                 .retrieve()
                 .bodyToMono(Product.class)
                 .block();
@@ -45,8 +46,14 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Inventory getInventory(String id) throws Exception {
-        return inventoryRepository.findById(id).orElseThrow(Exception::new);
+    public Inventory getBySkucode(String id) throws InventoryNotFoundException {
+        return inventoryRepository.findById(id).orElseThrow(InventoryNotFoundException::new);
+    }
+
+    @Override
+    public Inventory updateInventory(Inventory inventory) {
+        return inventoryRepository.save(inventory);
+
     }
 }
 
