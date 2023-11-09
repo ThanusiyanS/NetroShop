@@ -1,6 +1,6 @@
 package com.deltax.ordermanagement.Entity;
 
-import com.deltax.ordermanagement.DTO.CardItem;
+import com.deltax.ordermanagement.DTO.CartItem;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +17,6 @@ public class Cart {
     @Id
     private String cartId;
     private String userId;
-    private List<CardItem> cartItems;
+    private List<CartItem> cartItems;
+    private double totalPrice;
 }
