@@ -29,22 +29,22 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProduct(),HttpStatus.OK);
     }
 
-    @GetMapping("get/{id}")
-    public ResponseEntity<Product> getAProduct(@PathVariable String id){
-        return new ResponseEntity<>(productService.getAProduct(id),HttpStatus.OK);
+    @GetMapping("get/{skuCode}")
+    public ResponseEntity<Product> getAProduct(@PathVariable String skuCode){
+        return new ResponseEntity<>(productService.getAProduct(skuCode),HttpStatus.OK);
     }
 
     @PostMapping("update")
-    public ResponseEntity<Product> updateProduct(@RequestParam("id") String id, @RequestBody ProductRequest productRequest) {
-        return new ResponseEntity<>(productService.updateProduct(id, productRequest), HttpStatus.OK);
+    public ResponseEntity<Product> updateProduct(@RequestParam("skuCode") String skuCode, @RequestBody ProductRequest productRequest) {
+        return new ResponseEntity<>(productService.updateProduct(skuCode, productRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity<String> deleteProduct(@RequestParam("id") String id){
-        return new ResponseEntity<>(productService.deleteProduct(id),HttpStatus.OK);
+    public ResponseEntity<String> deleteProduct(@RequestParam("skuCode") String skuCode){
+        return new ResponseEntity<>(productService.deleteProduct(skuCode),HttpStatus.OK);
     }
     @PostMapping("/getPrices")
-    public ResponseEntity<List<PriceResponse>> getPriceByIds(@RequestBody List<String> prductIds){
-        return new ResponseEntity<>(productService.getPriceByIds(prductIds),HttpStatus.OK);
+    public ResponseEntity<List<PriceResponse>> getPriceBySkucodess(@RequestBody List<String> skuCodes){
+        return new ResponseEntity<>(productService.getPriceBySkucodess(skuCodes),HttpStatus.OK);
     }
 }

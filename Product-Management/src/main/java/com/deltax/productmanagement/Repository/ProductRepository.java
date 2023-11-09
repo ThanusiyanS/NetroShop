@@ -10,6 +10,6 @@ import java.util.Map;
 
 public interface ProductRepository extends MongoRepository<Product,String> {
 
-    @Query(value = "{'id':{$in:?0}}",fields = "{'id':1,'price':1}")
-    List<PriceResponse> findPriceByIdInDistinct(List<String> skuCodes);
+    @Query(value = "{'skuCode':{$in:?0}}",fields = "{'skuCode':1,'price':1}")
+    List<PriceResponse> findPriceBySkuCodeIn(List<String> skuCodes);
 }

@@ -1,6 +1,7 @@
 package com.deltax.inventorymanagement.Controler;
 
 import com.deltax.inventorymanagement.DTO.InventoryRequest;
+import com.deltax.inventorymanagement.DTO.InventoryResponse;
 import com.deltax.inventorymanagement.Entity.Inventory;
 import com.deltax.inventorymanagement.Exception.InventoryNotFoundException;
 import com.deltax.inventorymanagement.Service.InventoryService;
@@ -29,6 +30,10 @@ public class InventoryConroller {
         return inventoryService.getBySkucode(skucode);
     }
 
+    @PostMapping("/getBySkucodes")
+    public List<InventoryResponse> getByListOfSkuCodes(@RequestBody List<String> skuCodes){
+        return inventoryService.getByListOfSkuCodes(skuCodes);
+    }
 
 
 
