@@ -97,6 +97,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderTime(localDateTime);
         cartService.clearCart(userId);
         orderRepository.save(order);
+
+        //update inventory
         TransactionRequest transactionRequest = new TransactionRequest(userId,orderItems, TransactionType.SALE);
         webClientBuilder.build()
                 .post()
@@ -105,6 +107,8 @@ public class OrderServiceImpl implements OrderService {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
+
+
         return order;
     }
 
