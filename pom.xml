@@ -21,6 +21,7 @@
         <module>Product-Management</module>
         <module>discovery-server</module>
         <module>api-gateway</module>
+        <module>Delivery-Management</module>
     </modules>
     <properties>
         <java.version>17</java.version>
