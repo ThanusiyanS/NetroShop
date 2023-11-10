@@ -24,7 +24,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Inventory createInventory(InventoryRequest inventoryRequest) {
         Product product = webClientBuilder.build().get()
-                .uri("http://PRODUCT-SERVICE/products/get/" + inventoryRequest.getProductId())
+                .uri("http://PRODUCT-SERVICE/products/get/" + inventoryRequest.getSkuCode())
                 .retrieve()
                 .bodyToMono(Product.class)
                 .block();
@@ -33,7 +33,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
         Inventory inventory = new Inventory();
-        inventory.setSkuCode(inventoryRequest.getProductId());
+        inventory.setSkuCode(inventoryRequest.getSkuCode());
         inventory.setProductName(product.getProductName());
         inventory.setQuantity(inventoryRequest.getQuantity());
         return inventoryRepository.save(inventory);

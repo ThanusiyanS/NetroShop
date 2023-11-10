@@ -1,18 +1,18 @@
 package com.deltax.ordermanagement.Service;
 
 import com.deltax.ordermanagement.DTO.*;
+import com.deltax.ordermanagement.ENUM.TransactionType;
 import com.deltax.ordermanagement.Entity.Order;
+import com.deltax.ordermanagement.ENUM.OrderStatus;
 import com.deltax.ordermanagement.Exception.OutOfStockException;
 import com.deltax.ordermanagement.Repository.OrderRepository;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
                     .findFirst()
                     .orElseThrow(() -> new NotFoundException("Not found for SKU code: " + orderItem.getSkuCode()));
             total += priceResponse.getPrice() * orderItem.getQuantity();
+
         }
 
         Order order = new Order();
@@ -91,11 +92,20 @@ public class OrderServiceImpl implements OrderService {
         checkout.setShippingAddress(orderRequest.getShippingAddress());
         checkout.setPaymentMtd(orderRequest.getPaymentMethod());
         order.setCheckout(checkout);
-
-
-
-
-        return null;
+        order.setOrderStatus(OrderStatus.PLACED);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        order.setOrderTime(localDateTime);
+        cartService.clearCart(userId);
+        orderRepository.save(order);
+        TransactionRequest transactionRequest = new TransactionRequest(userId,orderItems, TransactionType.SALE);
+        webClientBuilder.build()
+                .post()
+                .uri("http://INVENTORY-SERVICE/transactions/create")
+                .bodyValue(transactionRequest)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        return order;
     }
 
     @Override
@@ -105,6 +115,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllOrder() {
-        return null;
+        return orderRepository.findAll();
     }
 }

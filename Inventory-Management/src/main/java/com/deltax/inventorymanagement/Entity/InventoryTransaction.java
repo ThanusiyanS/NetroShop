@@ -1,5 +1,6 @@
 package com.deltax.inventorymanagement.Entity;
 
+import com.deltax.inventorymanagement.DTO.InventoryRequest;
 import com.deltax.inventorymanagement.DTO.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,27 +14,22 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Document
 public class InventoryTransaction {
     @Id
     private String transactionId;
-    private String skuCode;
-    private long quantity;
+    private String userId;
+    private List<InventoryRequest> inventories;
     private TransactionType transactionType;
     private LocalDateTime transactionTime;
 
 
     public void setCTransactionTime() {
         LocalDateTime now = LocalDateTime.now();
-        ZoneId sriLankaTimeZone = ZoneId.of("Asia/Colombo");
-        ZonedDateTime sriLankaTime = now.atZone(sriLankaTimeZone);
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String formattedTime = sriLankaTime.format(formatter);
-
-        this.transactionTime = sriLankaTime.toLocalDateTime();
+        this.transactionTime = now;
 
     }
 }

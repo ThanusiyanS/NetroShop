@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class InventoryRequest {
-
-    private String productId;
+    private String skuCode;
     private long quantity;
 }
