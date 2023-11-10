@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PriceResponse {
-    private String id;
+    private String skuCode;
     private double price;
 }

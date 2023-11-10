@@ -27,19 +27,19 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getAProduct(String id) {
-        return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+    public Product getAProduct(String skuCode) {
+        return productRepository.findById(skuCode).orElseThrow(ProductNotFoundException::new);
     }
 
     @Override
-    public String deleteProduct(String id) {
-        productRepository.deleteById(id);
-        return "Product id: "+id+ " Deleted";
+    public String deleteProduct(String skuCode) {
+        productRepository.deleteById(skuCode);
+        return "Product id: "+skuCode+ " Deleted";
     }
 
     @Override
-    public Product updateProduct(String id, ProductRequest productRequest) {
-        Product old = getAProduct(id);
+    public Product updateProduct(String skuCode, ProductRequest productRequest) {
+        Product old = getAProduct(skuCode);
         old.setProductName(productRequest.getProductName());
         old.setProductType(productRequest.getProductType());
         old.setPrice(productRequest.getPrice());
@@ -50,8 +50,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<PriceResponse> getPriceByIds(List<String> productIds) {
+    public List<PriceResponse> getPriceBySkucodess(List<String> skuCodes) {
 
-        return productRepository.findPriceByIdInDistinct(productIds);
+        return productRepository.findPriceBySkuCodeIn(skuCodes);
     }
 }

@@ -122,7 +122,7 @@ public class CartServiceImpl implements CartService {
             if (item.isSelected()) {
 
                 PriceResponse priceResponse = prices.stream()
-                        .filter(price -> price.getId().equals(item.getSkuCode()))
+                        .filter(price -> price.getSkuCode().equals(item.getSkuCode()))
                         .findFirst()
                         .orElseThrow(() -> new NotFoundException("Price not found" + item.getSkuCode()));
 

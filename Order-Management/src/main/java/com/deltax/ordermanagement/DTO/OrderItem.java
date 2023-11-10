@@ -9,6 +9,5 @@ import lombok.Setter;
 @Getter
 public class OrderItem {
     String skuCode;
-    String productName;
     long quantity;
 }

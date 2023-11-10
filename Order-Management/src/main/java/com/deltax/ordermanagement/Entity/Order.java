@@ -2,6 +2,7 @@ package com.deltax.ordermanagement.Entity;
 
 import com.deltax.ordermanagement.DTO.Checkout;
 import com.deltax.ordermanagement.DTO.OrderItem;
+import com.deltax.ordermanagement.ENUM.OrderStatus;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,7 @@ public class Order {
     private List<OrderItem> orderItems;
     private OrderStatus orderStatus;
     private LocalDateTime orderTime;
+    private double totalAmount;
     private Checkout checkout;
 }
 
-enum OrderStatus {
-    PENDING, PROCESSING, DELIVERED
-}

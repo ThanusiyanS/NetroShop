@@ -1,5 +1,6 @@
 package com.deltax.inventorymanagement.Service;
 
+import com.deltax.inventorymanagement.DTO.InventoryRequest;
 import com.deltax.inventorymanagement.DTO.Product;
 import com.deltax.inventorymanagement.DTO.TransactionRequest;
 import com.deltax.inventorymanagement.Entity.Inventory;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,25 +25,31 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     public InventoryTransaction createTransaction(TransactionRequest transactionRequest) throws InventoryNotFoundException {
 
-        Inventory inventory = inventoryService.getBySkucode(transactionRequest.getSkuCode());
+        for (InventoryRequest orderedInventory : transactionRequest.getInventories()){
+            Inventory inventory= inventoryService.getBySkucode(orderedInventory.getSkuCode());
+            switch (transactionRequest.getTransactionType()){
+                case PURCHASE, RETURN:
+                     inventory.setQuantity(inventory.getQuantity() + orderedInventory.getQuantity());
+                    break;
+                case SALE:
+                    inventory.setQuantity(inventory.getQuantity() - orderedInventory.getQuantity());
+                    break;
+            }
+            inventoryService.updateInventory(inventory);
 
-        switch (transactionRequest.getTransactionType()){
-            case PURCHASE, RETURN:
-                inventory.setQuantity(inventory.getQuantity() + transactionRequest.getQuantity());
-                break;
-            case SALE:
-                inventory.setQuantity(inventory.getQuantity() - transactionRequest.getQuantity());
-                break;
         }
 
-        inventoryService.updateInventory(inventory);
-
         InventoryTransaction inventoryTransaction = new InventoryTransaction();
-        inventoryTransaction.setSkuCode(transactionRequest.getSkuCode());
-        inventoryTransaction.setQuantity(transactionRequest.getQuantity());
+        inventoryTransaction.setInventories(transactionRequest.getInventories());
         inventoryTransaction.setTransactionType(transactionRequest.getTransactionType());
+        inventoryTransaction.setUserId(transactionRequest.getUserId());
         inventoryTransaction.setCTransactionTime();
 
         return transactionRepository.save(inventoryTransaction);
+    }
+
+    @Override
+    public List<InventoryTransaction> getAllTransactions() {
+        return transactionRepository.findAll();
     }
 }
