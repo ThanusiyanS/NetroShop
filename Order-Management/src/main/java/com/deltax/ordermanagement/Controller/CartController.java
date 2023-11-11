@@ -12,14 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/carts")
-@Validated
 public class CartController {
 
     @Autowired
     private CartService cartService;
 
     @PostMapping("/create")
-    public Cart createCart(@Valid @RequestBody Cart cart) {
+    public Cart createCart(@RequestBody Cart cart) {
         return cartService.createCart(cart);
     }
 
