@@ -21,8 +21,8 @@ public class OrderController {
 
 
     @PostMapping("/test")
-    public String test(){
-        orderServiceImpl.sendNotificationToDeliveryService();
+    public String test(@RequestBody Order testOrder){
+        orderServiceImpl.sendOrderDetailsToDeliveryService1(testOrder);
         return "test done";
     }
 

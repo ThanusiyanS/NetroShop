@@ -9,6 +9,8 @@ import com.deltax.ordermanagement.Repository.OrderRepository;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -119,6 +121,19 @@ public class OrderServiceImpl implements OrderService {
         // Assuming your delivery service expects the order details in the message
         amqpTemplate.convertAndSend(exchange, routingKey, acknowledgmentMessage);
     }
+    public void sendOrderDetailsToDeliveryService1(Order order) {
+        // Create a message with the order details
+        MessageProperties properties = new MessageProperties();
+        properties.setHeader("orderId", order.getOrderId());  // Set orderId in the headers
+        properties.setHeader("status", order.getStatus());
+
+        Message message = new Message(new byte[0], properties);
+
+        // Send the message to the delivery-queue
+        amqpTemplate.send("delivery-queue", message);
+    }
+
+
     @Override
     public Order getOrder(String orderId) {
         return null;
