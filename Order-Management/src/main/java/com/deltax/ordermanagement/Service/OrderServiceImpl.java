@@ -8,6 +8,7 @@ import com.deltax.ordermanagement.Exception.OutOfStockException;
 import com.deltax.ordermanagement.Repository.OrderRepository;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final WebClient.Builder webClientBuilder;
-
+    private final AmqpTemplate amqpTemplate;
     @Override
     @Transactional
     public Order createOrder(String userId,OrderRequest orderRequest) {
@@ -97,6 +98,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderTime(localDateTime);
         cartService.clearCart(userId);
         orderRepository.save(order);
+
+        sendNotificationToDeliveryService();
         TransactionRequest transactionRequest = new TransactionRequest(userId,orderItems, TransactionType.SALE);
         webClientBuilder.build()
                 .post()
@@ -108,6 +111,14 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    public void sendNotificationToDeliveryService() {
+        // Customize this method according to your RabbitMQ configuration
+        String exchange = "netroshop-exchange";
+        String routingKey = "netroshop-routing-key";
+        String acknowledgmentMessage = "received for rabbit";
+        // Assuming your delivery service expects the order details in the message
+        amqpTemplate.convertAndSend(exchange, routingKey, acknowledgmentMessage);
+    }
     @Override
     public Order getOrder(String orderId) {
         return null;
