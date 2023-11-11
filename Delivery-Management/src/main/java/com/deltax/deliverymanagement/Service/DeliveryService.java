@@ -49,8 +49,7 @@ public class DeliveryService {
         logger.info("Received orderId: {}", orderId);
         logger.info("Received status: {}", status);
 
-        // Process the order and update the order status
-        updateOrderStatus(orderId, status);
+        createDelivery(new DeliveryStatus(orderId, status));
 
         // Example: Sending a simple acknowledgment message
         String acknowledgment = acknowledgmentMessage;

@@ -9,6 +9,12 @@ public class DeliveryStatus {
     private String orderId;
     private String status;
 
+
+    public DeliveryStatus(String orderId, String status) {
+        this.orderId = orderId;
+        this.status = status;
+    }
+
     // constructors, getters, and setters
 
     public String getOrderId() {
