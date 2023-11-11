@@ -25,5 +25,6 @@ public class Order {
     private LocalDateTime orderTime;
     private double totalAmount;
     private Checkout checkout;
+    private String status;
 }
 
