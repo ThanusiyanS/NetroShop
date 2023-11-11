@@ -8,6 +8,9 @@ import com.deltax.ordermanagement.Exception.OutOfStockException;
 import com.deltax.ordermanagement.Repository.OrderRepository;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final WebClient.Builder webClientBuilder;
-
+    private final AmqpTemplate amqpTemplate;
     @Override
     @Transactional
     public Order createOrder(String userId,OrderRequest orderRequest) {
@@ -98,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         cartService.clearCart(userId);
         orderRepository.save(order);
 
-        //update inventory
+        sendNotificationToDeliveryService();
         TransactionRequest transactionRequest = new TransactionRequest(userId,orderItems, TransactionType.SALE);
         webClientBuilder.build()
                 .post()
@@ -107,8 +110,6 @@ public class OrderServiceImpl implements OrderService {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
-
         return order;
     }
 

@@ -3,6 +3,7 @@ package com.deltax.ordermanagement.Controller;
 import com.deltax.ordermanagement.DTO.OrderRequest;
 import com.deltax.ordermanagement.Entity.Order;
 import com.deltax.ordermanagement.Service.OrderService;
+import com.deltax.ordermanagement.Service.OrderServiceImpl;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,14 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderServiceImpl orderServiceImpl;
+
+
+    @PostMapping("/test")
+    public String test(@RequestBody Order testOrder){
+        orderServiceImpl.sendOrderDetailsToDeliveryService1(testOrder);
+        return "test done";
+    }
 
     @PostMapping("/create")
     public Order createOrder(@RequestParam("userId") String userId, @RequestBody OrderRequest orderRequest){

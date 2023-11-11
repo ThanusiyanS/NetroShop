@@ -27,5 +27,6 @@ public class Order {
     @Min(value = 0, message = "Price should not be less than 0")
     private double totalAmount;
     private Checkout checkout;
+    private String status;
 }
 
