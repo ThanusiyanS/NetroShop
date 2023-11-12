@@ -112,6 +112,14 @@ public class OrderServiceImpl implements OrderService {
                 .block();
         return order;
     }
+    public void sendNotificationToDeliveryService() {
+        // Customize this method according to your RabbitMQ configuration
+        String exchange = "netroshop-exchange";
+        String routingKey = "netroshop-routing-key";
+        String acknowledgmentMessage = "received for rabbit";
+        // Assuming your delivery service expects the order details in the message
+        amqpTemplate.convertAndSend(exchange, routingKey, acknowledgmentMessage);
+    }
 
     @Override
     public Order getOrder(String orderId) {
