@@ -8,14 +8,24 @@ public class DeliveryStatus {
     @Id
     private String orderId;
     private String status;
+    private String orderTime;
 
 
-    public DeliveryStatus(String orderId, String status) {
+    public DeliveryStatus(String orderId, String status,String orderTime) {
         this.orderId = orderId;
         this.status = status;
+        this.orderTime = orderTime;
     }
 
     // constructors, getters, and setters
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
 
     public String getOrderId() {
         return orderId;

@@ -116,8 +116,8 @@ public class OrderServiceImpl implements OrderService {
         // Create a message with the order details
         MessageProperties properties = new MessageProperties();
         properties.setHeader("orderId", order.getOrderId());  // Set orderId in the headers
-        properties.setHeader("status", order.getStatus());
-
+        properties.setHeader("orderStatus", order.getOrderStatus());
+        properties.setHeader("orderTime", order.getOrderTime());
         Message message = new Message(new byte[0], properties);
 
         // Send the message to the delivery-queue
