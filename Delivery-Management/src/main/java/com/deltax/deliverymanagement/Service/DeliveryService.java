@@ -43,13 +43,15 @@ public class DeliveryService {
 
         // Extract orderId and status from headers
         String orderId = (String) headers.get("orderId");
-        String status = (String) headers.get("status");
+        String status = (String) headers.get("orderStatus");
+        String orderTime = (String) headers.get("orderTime");
 
         // Log orderId and status
         logger.info("Received orderId: {}", orderId);
         logger.info("Received status: {}", status);
+        logger.info("Received orderTime: {}", orderTime);
 
-        createDelivery(new DeliveryStatus(orderId, status));
+        createDelivery(new DeliveryStatus(orderId,status,orderTime));
 
         // Example: Sending a simple acknowledgment message
         String acknowledgment = acknowledgmentMessage;
