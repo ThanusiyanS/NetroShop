@@ -7,7 +7,7 @@ import com.deltax.inventorymanagement.Exception.InventoryNotFoundException;
 import java.util.List;
 
 public interface TransactionService {
-    public InventoryTransaction createTransaction(TransactionRequest transactionRequest) throws InventoryNotFoundException;
+    public void createTransaction(TransactionRequest transactionRequest) throws InventoryNotFoundException;
 
     public List<InventoryTransaction> getAllTransactions();
 }

@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         cartService.clearCart(userId);
         orderRepository.save(order);
 
-        sendNotificationToDeliveryService();
+        sendOrderDetailsToDeliveryService1(order);
         TransactionRequest transactionRequest = new TransactionRequest(userId,orderItems, TransactionType.SALE);
         webClientBuilder.build()
                 .post()
@@ -111,15 +111,6 @@ public class OrderServiceImpl implements OrderService {
                 .bodyToMono(String.class)
                 .block();
         return order;
-    }
-
-    public void sendNotificationToDeliveryService() {
-        // Customize this method according to your RabbitMQ configuration
-        String exchange = "netroshop-exchange";
-        String routingKey = "netroshop-routing-key";
-        String acknowledgmentMessage = "received for rabbit";
-        // Assuming your delivery service expects the order details in the message
-        amqpTemplate.convertAndSend(exchange, routingKey, acknowledgmentMessage);
     }
     public void sendOrderDetailsToDeliveryService1(Order order) {
         // Create a message with the order details
@@ -132,7 +123,6 @@ public class OrderServiceImpl implements OrderService {
         // Send the message to the delivery-queue
         amqpTemplate.send("delivery-queue", message);
     }
-
 
     @Override
     public Order getOrder(String orderId) {

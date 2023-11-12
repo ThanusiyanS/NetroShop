@@ -1,6 +1,7 @@
 package com.deltax.ordermanagement.Entity;
 
 import com.deltax.ordermanagement.DTO.CartItem;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,6 @@ public class Cart {
     private String cartId;
     private String userId;
     private List<CartItem> cartItems;
+    @Min(value = 0, message = "Price should not be less than 0")
     private double totalPrice;
 }

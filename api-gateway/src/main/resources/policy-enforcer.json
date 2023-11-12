@@ -1,0 +1,10 @@
+
+
+{
+  "realm": "Authentication-realm",
+  "auth-server-url": "http://Localhost:8181",
+  "resource": "springboot-netroshop",
+  "credentials": {
+    "secret": "I1qOoEcuRxTXpv1LSZhkcp7uy5hPbxBg"
+  }
+}

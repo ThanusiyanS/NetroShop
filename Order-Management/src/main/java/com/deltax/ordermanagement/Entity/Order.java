@@ -3,6 +3,7 @@ package com.deltax.ordermanagement.Entity;
 import com.deltax.ordermanagement.DTO.Checkout;
 import com.deltax.ordermanagement.DTO.OrderItem;
 import com.deltax.ordermanagement.ENUM.OrderStatus;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Order {
     private List<OrderItem> orderItems;
     private OrderStatus orderStatus;
     private LocalDateTime orderTime;
+    @Min(value = 0, message = "Price should not be less than 0")
     private double totalAmount;
     private Checkout checkout;
     private String status;

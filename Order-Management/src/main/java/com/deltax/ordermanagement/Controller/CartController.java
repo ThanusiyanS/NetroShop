@@ -3,7 +3,9 @@ package com.deltax.ordermanagement.Controller;
 import com.deltax.ordermanagement.DTO.CartItem;
 import com.deltax.ordermanagement.Entity.Cart;
 import com.deltax.ordermanagement.Service.CartService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

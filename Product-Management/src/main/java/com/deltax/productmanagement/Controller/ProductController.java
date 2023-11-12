@@ -4,10 +4,12 @@ import com.deltax.productmanagement.DTO.PriceResponse;
 import com.deltax.productmanagement.DTO.ProductRequest;
 import com.deltax.productmanagement.Entity.Product;
 import com.deltax.productmanagement.Service.ProductService;
+import jakarta.validation.Valid;
 import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product){
+    public ResponseEntity<Product> addProduct( @RequestBody Product product){
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 
